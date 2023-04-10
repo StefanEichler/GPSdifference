@@ -5,66 +5,62 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Positionsabweichungsrechner</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		td{
+			text-align: center;
+		}
+	</style>
 </head>
 
 <body>
-
-	<h4>Shall</h4>
-	<div>
-		<label id="">East:</label>
-		<label id="east"></label>
-	</div>
-	<div>
-		<label id="">North:</label>
-		<label id="north"></label>
-	</div>
-	<div>
-		<label id="">Height:</label>
-		<label id="height"></label>
-	</div>
-
-	<h4>Is</h4>
-	<div>
-		<label id="">East:</label>
-		<label id="eastIst"></label>
-	</div>
-	<div>
-		<label id="">North:</label>
-		<label id="northIst"></label>
-	</div>
-	
-	<div>
-		<label id="">Height:</label>
-		<label id="heightIst"></label>
-	</div>
-	<div>
-		<label id="">Accuracy:</label>
-		<label id="accuracy"></label>
-	</div>
-	
-	<hr/>
-
-	<div>
-		<label id="">Diff East:</label>
-		<label id="eastDiff"></label>
-	</div>
-	<div>
-		<label id="">Diff North:</label>
-		<label id="northDiff"></label>
-	</div>
-	<div>
-		<label id="">Diff Height:</label>
-		<label id="heightDiff"></label>
-	</div>
-
-	<div>
-		<label id="">Angle:</label>
-		<label id="angle"></label>
-	</div>
-	<div>
-		<label id="">Distance:</label>
-		<label id="distance"></label>
-	</div>
+	<table>
+		<tr>
+			<th>Name</th>
+			<th>Shall</th>
+			<th>Is</th>
+			<th>Diffrence</th>
+		</tr>
+		<tr>
+			<td>East</td>
+			<td><label id="east"></label></td>
+			<td><label id="eastIst"></label></td>
+			<td><label id="eastDiff"></label></td>
+		</tr>
+		<tr>
+			<td>North</td>
+			<td><label id="north"></label></td>
+			<td><label id="northIst"></label></td>
+			<td><label id="northDiff"></label></td>
+		</tr>
+		<tr>
+			<td>Height</td>
+			<td><label id="height"></label></td>
+			<td><label id="heightIst"></label></td>
+			<td><label id="heightDiff"></label></td>
+		</tr>
+		<tr>
+			<td colspan="4"><hr></td>
+		</tr>
+		<tr>
+			<td>Angle</td>
+			<td><label id="angle"></label></td>
+		</tr>
+		<tr>
+			<td>Distance</td>
+			<td><label id="distance"></label></td>
+		</tr>
+		<tr>
+			<td colspan="4"><hr></td>
+		</tr>
+		<tr>
+			<td>Accuracy E-N</td>
+			<td><label id="accuracy"></label></td>
+		</tr>
+		<tr>
+			<td>Accuracy Height</td>
+			<td><label id="accuracyHeight"></label></td>
+		</tr>
+	</table>
 
 	<p id="error" style="color:red;"></p>
 
@@ -87,88 +83,105 @@
 
 		function showPosition(position) 
 		{
-			// ------------------ NORTH -------------------------
-			// Label
-			var northInputLabel = document.getElementById("north");
-			var northLiveLabel = document.getElementById("northIst");
-			var northDiffLabel = document.getElementById("northDiff");
-			
-			// Calculation
-			var northInput = parseFloat(new URL(location.href).searchParams.get('north'));
-			var northLive = position.coords.latitude;
-			var northDiff = northInput - northLive;
-			var northDiffMeter = northDiff * 111568;
-			
-			// Insert values
-			northInputLabel.innerHTML = northInput.toFixed(8) + "°";
-			northLiveLabel.innerHTML = northLive.toFixed(8) + "°";
-			northDiffLabel.innerHTML = northDiff.toFixed(8) + "° (" + northDiffMeter.toFixed(2) + " m)";
-
-			// ------------------ EAST -------------------------
-			// Label
-			var eastInputLabel = document.getElementById("east");
-			var eastLiveLabel = document.getElementById("eastIst");
-			var eastDiffLabel = document.getElementById("eastDiff");
-
-			// Calculation
-			var eastInput = parseFloat(new URL(location.href).searchParams.get('east'));
-			var eastLive = position.coords.longitude;
-			var eastDiff = eastInput - eastLive;
-			var eastDiffMeter = eastDiff * 74535;
-
-			// Insert values
-			eastInputLabel.innerHTML = eastInput.toFixed(8) + "°";
-			eastLiveLabel.innerHTML = eastLive.toFixed(8) + "°";
-			eastDiffLabel.innerHTML = eastDiff.toFixed(8)  + "° (" + eastDiffMeter.toFixed(2) +  " m)";
-
-
-			// ------------------ HEIGHT -------------------------
-			// Label
-			var heightInputLabel = document.getElementById("height");
-			var heightLabel = document.getElementById("heightIst");			
-			var heightDiffLabel = document.getElementById("heightDiff");
-
-			// Calculation
-			var heightInput = parseFloat(new URL(location.href).searchParams.get('height'));			
-			var heightLive = position.coords.altitude;
-								
-			if(heightLive == null)
+			try
 			{
-				// Insert values
-				heightLabel.innerHTML = "-";
-				heightDiffLabel.innerHTML = "-";
 
+				// ------------------ NORTH -------------------------
+				// Label
+				var northInputLabel = document.getElementById("north");
+				var northLiveLabel = document.getElementById("northIst");
+				var northDiffLabel = document.getElementById("northDiff");
+
+				// Calculation
+				var northInput = parseFloat(new URL(location.href).searchParams.get('north'));
+				var northLive = position.coords.latitude;
+				var northDiff = northInput - northLive;
+				var northDiffMeter = northDiff * 111568;
+
+				// Insert values
+				northInputLabel.innerHTML = northInput.toFixed(8) + "°";
+				northLiveLabel.innerHTML = northLive.toFixed(8) + "°";
+				northDiffLabel.innerHTML = northDiff.toFixed(8) + "° (" + northDiffMeter.toFixed(2) + " m)";
+
+				// ------------------ EAST -------------------------
+				// Label
+				var eastInputLabel = document.getElementById("east");
+				var eastLiveLabel = document.getElementById("eastIst");
+				var eastDiffLabel = document.getElementById("eastDiff");
+
+				// Calculation
+				var eastInput = parseFloat(new URL(location.href).searchParams.get('east'));
+				var eastLive = position.coords.longitude;
+				var eastDiff = eastInput - eastLive;
+				var eastDiffMeter = eastDiff * 74535;
+
+				// Insert values
+				eastInputLabel.innerHTML = eastInput.toFixed(8) + "°";
+				eastLiveLabel.innerHTML = eastLive.toFixed(8) + "°";
+				eastDiffLabel.innerHTML = eastDiff.toFixed(8) + "° (" + eastDiffMeter.toFixed(2) + " m)";
+
+
+				// ------------------ HEIGHT -------------------------
+				// Label
+				var heightInputLabel = document.getElementById("height");
+				var heightLabel = document.getElementById("heightIst");
+				var heightDiffLabel = document.getElementById("heightDiff");
+
+				// Calculation
+				var heightInput = parseFloat(new URL(location.href).searchParams.get('height'));
+				var heightLive = position.coords.altitude;
+
+				if (heightLive == null)
+				{
+					// Insert values
+					heightLabel.innerHTML = "-";
+					heightDiffLabel.innerHTML = "-";
+				}
+				else
+				{
+					var heightDiff = heightInput - heightLive;
+					var heightDiffMeter = heightDiff * 1;
+
+					// Insert values
+					heightLabel.innerHTML = heightLive.toFixed(8) + " m";
+					heightDiffLabel.innerHTML = heightDiff.toFixed(8) + " m";
+				}
+
+				heightInputLabel.innerHTML = heightInput.toFixed(2) + " m";
+
+
+				// ------------------ SPECIAL CALC -------------------------
+				// Label
+				var accuracyLabel = document.getElementById("accuracy");
+				var accuracyHeightLabel = document.getElementById("accuracyHeight");
+
+				var angleLabel = document.getElementById("angle");
+				var distanceLabel = document.getElementById("distance");
+
+				// Calculation
+				var accuracy = position.coords.accuracy;
+				var accuracyHeight = position.coords.altitudeAccuracy;
+				var angle = Math.atan2(eastDiff, northDiff + 0.00001) * 180 / Math.PI;
+				var distance = Math.sqrt(northDiffMeter * northDiffMeter + eastDiffMeter * eastDiffMeter);
+
+				// Insert values
+				accuracyLabel.innerHTML = accuracy.toFixed(2) + " m";
+				if (accuracyHeight == null)
+				{
+					accuracyHeightLabel.innerHTML = "-";
+				}
+				else
+				{
+					accuracyHeightLabel.innerHTML = accuracyHeight.toFixed(2) + " m";
+				}
+				angleLabel.innerHTML = angle.toFixed(8) + "&deg;";
+				distanceLabel.innerHTML = distance.toFixed(2) + " m";
+
+			} catch (error)
+			{
+				alert(error)
 			}
-			else
-			{
-				var heightDiff = heightInput - heightLive;
-				var heightDiffMeter = heightDiff * 1;
 
-				// Insert values
-				heightLabel.innerHTML = heightLive.toFixed(8) + " m";
-				heightDiffLabel.innerHTML = heightDiff.toFixed(8) +  " m";
-				
-				
-			} 		
-			heightInputLabel.innerHTML = heightInput.toFixed(2) + " m";
-
-			
-			// ------------------ SPECIAL CALC -------------------------
-			// Label
-			var accuracyLabel = document.getElementById("accuracy");
-			var angleLabel = document.getElementById("angle");
-			var distanceLabel = document.getElementById("distance");
-
-			// Calculation
-			var accuracy = position.coords.accuracy;
-			var angle = Math.atan2(eastDiff, northDiff + 0.00001) * 180 / Math.PI;
-			var distance = Math.sqrt(northDiffMeter * northDiffMeter + eastDiffMeter * eastDiffMeter);
-
-			// Insert values
-			accuracyLabel.innerHTML = accuracy.toFixed(2) + " m";
-			angleLabel.innerHTML = angle.toFixed(8) + "&deg;";
-			distanceLabel.innerHTML = distance.toFixed(2) + " m";	
-			
 		}
 
 		function showError(error) 
@@ -195,5 +208,3 @@
 </body>
 
 </html>
-
-

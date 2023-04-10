@@ -6,9 +6,11 @@
 	<title>Positionsabweichungsrechner</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style>
-		td{
+		td {
 			text-align: center;
+			vertical-align: top;
 		}
+
 	</style>
 </head>
 
@@ -39,7 +41,9 @@
 			<td><label id="heightDiff"></label></td>
 		</tr>
 		<tr>
-			<td colspan="4"><hr></td>
+			<td colspan="4">
+				<hr>
+			</td>
 		</tr>
 		<tr>
 			<td>Angle</td>
@@ -50,23 +54,36 @@
 			<td><label id="distance"></label></td>
 		</tr>
 		<tr>
-			<td colspan="4"><hr></td>
+			<td colspan="4">
+				<hr>
+			</td>
 		</tr>
 		<tr>
-			<td>Accuracy E-N</td>
+			<th>Accuracy</th>
+		</tr>
+		<tr>
+			<td>East-North</td>
 			<td><label id="accuracy"></label></td>
 		</tr>
 		<tr>
-			<td>Accuracy Height</td>
+			<td>Height</td>
 			<td><label id="accuracyHeight"></label></td>
 		</tr>
 	</table>
 
 	<p id="error" style="color:red;"></p>
 
+	<input type="checkbox" id="fullFloat" name="fullFloat" value="true">Show up to 8 floating numbers</input>
+	<div>
+		GPS Positions are updated every second. Update rate of your device can be diffrent.
+	</div>
 
 	<script>
-		getLocation();
+		setInterval(function ()
+		{
+			getLocation();
+		}, 1000);
+
 
 		function getLocation() 
 		{
@@ -85,6 +102,13 @@
 		{
 			try
 			{
+				var checkboxSelected = document.getElementById("fullFloat");
+				var floatNumber = 2;
+				if (true == checkboxSelected.checked)
+				{
+					floatNumber = 8;
+				}
+
 
 				// ------------------ NORTH -------------------------
 				// Label
@@ -99,9 +123,9 @@
 				var northDiffMeter = northDiff * 111568;
 
 				// Insert values
-				northInputLabel.innerHTML = northInput.toFixed(8) + "°";
-				northLiveLabel.innerHTML = northLive.toFixed(8) + "°";
-				northDiffLabel.innerHTML = northDiff.toFixed(8) + "° (" + northDiffMeter.toFixed(2) + " m)";
+				northInputLabel.innerHTML = northInput.toFixed(floatNumber) + "°";
+				northLiveLabel.innerHTML = northLive.toFixed(floatNumber) + "°";
+				northDiffLabel.innerHTML = northDiff.toFixed(floatNumber) + "°<br/>(" + northDiffMeter.toFixed(2) + " m)";
 
 				// ------------------ EAST -------------------------
 				// Label
@@ -116,9 +140,9 @@
 				var eastDiffMeter = eastDiff * 74535;
 
 				// Insert values
-				eastInputLabel.innerHTML = eastInput.toFixed(8) + "°";
-				eastLiveLabel.innerHTML = eastLive.toFixed(8) + "°";
-				eastDiffLabel.innerHTML = eastDiff.toFixed(8) + "° (" + eastDiffMeter.toFixed(2) + " m)";
+				eastInputLabel.innerHTML = eastInput.toFixed(floatNumber) + "°";
+				eastLiveLabel.innerHTML = eastLive.toFixed(floatNumber) + "°";
+				eastDiffLabel.innerHTML = eastDiff.toFixed(floatNumber) + "°<br/>(" + eastDiffMeter.toFixed(2) + " m)";
 
 
 				// ------------------ HEIGHT -------------------------
@@ -143,8 +167,8 @@
 					var heightDiffMeter = heightDiff * 1;
 
 					// Insert values
-					heightLabel.innerHTML = heightLive.toFixed(8) + " m";
-					heightDiffLabel.innerHTML = heightDiff.toFixed(8) + " m";
+					heightLabel.innerHTML = heightLive.toFixed(2) + " m";
+					heightDiffLabel.innerHTML = heightDiff.toFixed(2) + " m";
 				}
 
 				heightInputLabel.innerHTML = heightInput.toFixed(2) + " m";
@@ -174,7 +198,7 @@
 				{
 					accuracyHeightLabel.innerHTML = accuracyHeight.toFixed(2) + " m";
 				}
-				angleLabel.innerHTML = angle.toFixed(8) + "&deg;";
+				angleLabel.innerHTML = angle.toFixed(floatNumber) + "&deg;";
 				distanceLabel.innerHTML = distance.toFixed(2) + " m";
 
 			} catch (error)

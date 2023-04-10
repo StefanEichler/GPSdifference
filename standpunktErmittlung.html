@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Positionsabweichungsrechner</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+	<h4>Shall</h4>
+	<div>
+		<label id="">East:</label>
+		<label id="east"></label>
+	</div>
+	<div>
+		<label id="">North:</label>
+		<label id="north"></label>
+	</div>
+
+	<h4>Is</h4>
+	<div>
+		<label id="">East:</label>
+		<label id="eastIst"></label>
+	</div>
+	<div>
+		<label id="">North:</label>
+		<label id="northIst"></label>
+	</div>
+	
+	<div>
+		<label id="">Height:</label>
+		<label id="heightIst"></label>
+	</div>
+	<div>
+		<label id="">Accuracy:</label>
+		<label id="accuracy"></label>
+	</div>
+	
+	<hr/>
+
+	<div>
+		<label id="">Diff East:</label>
+		<label id="eastDiff"></label>
+	</div>
+	<div>
+		<label id="">Diff North:</label>
+		<label id="northDiff"></label>
+	</div>
+
+	<div>
+		<label id="">Angle:</label>
+		<label id="angle"></label>
+	</div>
+	<div>
+		<label id="">Distance:</label>
+		<label id="distance"></label>
+	</div>
+
+	<p id="error" style="color:red;"></p>
+
+
+	<script>
+		getLocation();
+
+		function getLocation() 
+		{
+			if (navigator.geolocation) 
+			{
+				navigator.geolocation.getCurrentPosition(showPosition, showError);
+			}
+			else 
+			{
+				var errorLabel = document.getElementById("error");
+				errorLabel.innerHTML = "Geolocation is not supported by this browser.";
+			}
+		}
+
+		function showPosition(position) 
+		{
+			var northInputLabel = document.getElementById("north");
+			var eastInputLabel = document.getElementById("east");
+			
+			var northLiveLabel = document.getElementById("northIst");
+			var eastLiveLabel = document.getElementById("eastIst");
+			var heightLabel = document.getElementById("heightIst");
+			var accuracyLabel = document.getElementById("accuracy");
+			
+			var northDiffLabel = document.getElementById("northDiff");
+			var eastDiffLabel = document.getElementById("eastDiff");
+			
+			var angleLabel = document.getElementById("angle");
+			var distanceLabel = document.getElementById("distance");
+			
+			//-----------------------------------------------------------------			
+			var northInput = parseInt(new URL(location.href).searchParams.get('north'));
+			var eastInput = parseInt(new URL(location.href).searchParams.get('east'));
+			
+			var northLive = position.coords.latitude;
+			var eastLive = position.coords.longitude;
+			var heightLive = position.coords.altitude;
+			var accuracy = position.coords.accuracy;
+					
+			var northDiff = northInput - northLive;
+			var eastDiff = eastInput - eastLive;
+			
+			var northDiffMeter = northDiff * 111568;
+			var eastDiffMeter = eastDiff * 74535;
+			
+			var angle = Math.atan2(eastDiff, northDiff + 0.00001) * 180 / Math.PI;
+			var distance = Math.sqrt(northDiffMeter * northDiffMeter + eastDiffMeter * eastDiffMeter);
+			
+			//-----------------------------------------------------------------
+			northInputLabel.innerHTML = northInput.toFixed(8);
+			eastInputLabel.innerHTML = eastInput.toFixed(8);
+			
+			northLiveLabel.innerHTML = northLive.toFixed(8);
+			eastLiveLabel.innerHTML = eastLive.toFixed(8);
+			if(heightLive == null)
+			{
+				heightLabel.innerHTML = "-";
+			}
+			else
+			{
+				heightLabel.innerHTML = heightLive.toFixed(8);
+			}
+			accuracyLabel.innerHTML = accuracy.toFixed(2) + " m";
+			
+			northDiffLabel.innerHTML = northDiff.toFixed(8) + " (" + northDiffMeter.toFixed(2) + " m)";
+			eastDiffLabel.innerHTML = eastDiff.toFixed(8)  + " (" + eastDiffMeter.toFixed(2) +  " m)";
+			
+			angleLabel.innerHTML = angle.toFixed(8) + "&deg;";
+			distanceLabel.innerHTML = distance.toFixed(2) + " m";
+		}
+
+		function showError(error) 
+		{
+			var errorLabel = document.getElementById("error");
+			switch (error.code) 
+			{
+				case error.PERMISSION_DENIED:
+					errorLabel.innerHTML = "User denied the request for Geolocation."
+					break;
+				case error.POSITION_UNAVAILABLE:
+					errorLabel.innerHTML = "Location information is unavailable."
+					break;
+				case error.TIMEOUT:
+					errorLabel.innerHTML = "The request to get user location timed out."
+					break;
+				case error.UNKNOWN_ERROR:
+					errorLabel.innerHTML = "An unknown error occurred."
+					break;
+			}
+		}
+	</script>
+
+</body>
+
+</html>
+
+

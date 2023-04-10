@@ -18,6 +18,10 @@
 		<label id="">North:</label>
 		<label id="north"></label>
 	</div>
+	<div>
+		<label id="">Height:</label>
+		<label id="height"></label>
+	</div>
 
 	<h4>Is</h4>
 	<div>
@@ -47,6 +51,10 @@
 	<div>
 		<label id="">Diff North:</label>
 		<label id="northDiff"></label>
+	</div>
+	<div>
+		<label id="">Diff Height:</label>
+		<label id="heightDiff"></label>
 	</div>
 
 	<div>
@@ -81,6 +89,7 @@
 		{
 			var northInputLabel = document.getElementById("north");
 			var eastInputLabel = document.getElementById("east");
+			var heightInputLabel = document.getElementById("height");
 			
 			var northLiveLabel = document.getElementById("northIst");
 			var eastLiveLabel = document.getElementById("eastIst");
@@ -89,13 +98,15 @@
 			
 			var northDiffLabel = document.getElementById("northDiff");
 			var eastDiffLabel = document.getElementById("eastDiff");
+			var heightDiffLabel = document.getElementById("heightDiff");
 			
 			var angleLabel = document.getElementById("angle");
 			var distanceLabel = document.getElementById("distance");
 			
 			//-----------------------------------------------------------------			
-			var northInput = parseInt(new URL(location.href).searchParams.get('north'));
-			var eastInput = parseInt(new URL(location.href).searchParams.get('east'));
+			var northInput = parseFloat(new URL(location.href).searchParams.get('north'));
+			var eastInput = parseFloat(new URL(location.href).searchParams.get('east'));
+			var heightInput = parseFloat(new URL(location.href).searchParams.get('height'));
 			
 			var northLive = position.coords.latitude;
 			var eastLive = position.coords.longitude;
@@ -105,6 +116,19 @@
 			var northDiff = northInput - northLive;
 			var eastDiff = eastInput - eastLive;
 			
+			var heightDiff;
+			var heightDiffMeter;
+			if(heightLive == null)
+			{
+				heightDiff = "-";
+				heightDiffMeter = "-";
+			}
+			else
+			{
+				heightDiff = heightInput - heightLive;
+				heightDiffMeter = heightDiff * 1;
+			} 
+			
 			var northDiffMeter = northDiff * 111568;
 			var eastDiffMeter = eastDiff * 74535;
 			
@@ -112,23 +136,28 @@
 			var distance = Math.sqrt(northDiffMeter * northDiffMeter + eastDiffMeter * eastDiffMeter);
 			
 			//-----------------------------------------------------------------
-			northInputLabel.innerHTML = northInput.toFixed(8);
-			eastInputLabel.innerHTML = eastInput.toFixed(8);
+			northInputLabel.innerHTML = northInput.toFixed(8) + "°";
+			eastInputLabel.innerHTML = eastInput.toFixed(8) + "°";
+			heightInputLabel.innerHTML = heightInput.toFixed(2) + " m";
 			
-			northLiveLabel.innerHTML = northLive.toFixed(8);
-			eastLiveLabel.innerHTML = eastLive.toFixed(8);
+			northLiveLabel.innerHTML = northLive.toFixed(8) + "°";
+			eastLiveLabel.innerHTML = eastLive.toFixed(8) + "°";
+			
 			if(heightLive == null)
 			{
 				heightLabel.innerHTML = "-";
+				heightDiffLabel.innerHTML = "-";
 			}
 			else
 			{
-				heightLabel.innerHTML = heightLive.toFixed(8);
+				heightLabel.innerHTML = heightLive.toFixed(8) + " m";
+				heightDiffLabel.innerHTML = heightDiff.toFixed(8) +  " m";
 			}
+			
 			accuracyLabel.innerHTML = accuracy.toFixed(2) + " m";
 			
-			northDiffLabel.innerHTML = northDiff.toFixed(8) + " (" + northDiffMeter.toFixed(2) + " m)";
-			eastDiffLabel.innerHTML = eastDiff.toFixed(8)  + " (" + eastDiffMeter.toFixed(2) +  " m)";
+			northDiffLabel.innerHTML = northDiff.toFixed(8) + "° (" + northDiffMeter.toFixed(2) + " m)";
+			eastDiffLabel.innerHTML = eastDiff.toFixed(8)  + "° (" + eastDiffMeter.toFixed(2) +  " m)";
 			
 			angleLabel.innerHTML = angle.toFixed(8) + "&deg;";
 			distanceLabel.innerHTML = distance.toFixed(2) + " m";

@@ -113,6 +113,7 @@
 				table.appendChild(trHeader);
 				table.appendChild(trEast);
 				table.appendChild(trNorth);
+				table.appendChild(trHeight);
 				table.appendChild(trAngle);
 				table.appendChild(trDistance);
 				table.appendChild(trAccurancy);
@@ -134,6 +135,11 @@
 				trNorth.appendChild(tdNorthIs);
 				trNorth.appendChild(tdNorthDiff);
 				
+				trHeight.appendChild(tdHeightName);
+				trHeight.appendChild(tdHeightShall);
+				trHeight.appendChild(tdHeightIs);
+				trHeight.appendChild(tdHeightDiff);
+				
 				trAngle.appendChild(tdAngleName);
 				trAngle.appendChild(tdAngleIs);
 				
@@ -154,6 +160,7 @@
 				tdHeaderDiff.innerHTML = "Difference";
 				tdEastName.innerHTML = "East";
 				tdNorthName.innerHTML = "North";
+				tdHeightName.innerHTML = "Height";
 				tdAngleName.innerHTML = "Angle";
 				tdDistanceName.innerHTML = "Distance";
 				tdAccurancyName.innerHTML = "Accurancy";
